@@ -1,4 +1,3 @@
-import { type } from 'os';
 import sdk from 'stremio-addon-sdk';
 const { addonBuilder } = sdk;
 import os from 'os';
@@ -59,7 +58,7 @@ builder.defineStreamHandler(async ({type, id}) => {
         }
         const localIp = getLocalIp();
 
-        const trackers = [
+        const defaultTrackers = [
             'udp://tracker.opentrackr.org:1337/announce',
             'udp://tracker.openbittorrent.com:6969/announce',
             'udp://tracker.internetwarriors.net:1337/announce',
@@ -73,7 +72,8 @@ builder.defineStreamHandler(async ({type, id}) => {
 
             if (hash) {
                     const baseMagnet = `magnet:?xt=urn:btih:${hash}`;
-                    const magnetWithTrackers = trackers.reduce((m, tr) => m + `&tr=${encodeURIComponent(tr)}`, baseMagnet);
+                    const trackersList = (Array.isArray(stream.trackers) && stream.trackers.length) ? stream.trackers : defaultTrackers;
+                    const magnetWithTrackers = trackersList.reduce((m, tr) => m + `&tr=${encodeURIComponent(tr)}`, baseMagnet);
                     const localUrl = `http://${localIp}:${STREAM_PORT}/stream?torrent=${encodeURIComponent(magnetWithTrackers)}`;
                     return {
                         name: `[Local] ${stream.name}`,

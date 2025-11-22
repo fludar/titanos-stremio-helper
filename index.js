@@ -1,5 +1,6 @@
 import sdk from 'stremio-addon-sdk';
 import { addon } from './addon.js';
+import serverApp from './server.js'
 import express from 'express';
 import os from 'os';
 
@@ -17,6 +18,7 @@ function getLocalIp() {
 
 const addonApp = express();
 const ADDON_PORT = 7000;
+const STREAM_PORT = 7001;
 
 addonApp.get('/', (req, res) => {
     res.redirect('/manifest.json');
@@ -25,5 +27,9 @@ addonApp.get('/', (req, res) => {
 addonApp.use('/', sdk.getRouter(addon));
 
 addonApp.listen(ADDON_PORT, '0.0.0.0', () => {
-    console.log(`Addon server is running on http://${getLocalIp()}:${ADDON_PORT}`);
+    console.log(`Addon server is running on http://${getLocalIp()}:${ADDON_PORT}/manifest.json`);
+    });
+
+serverApp.listen(STREAM_PORT, '0.0.0.0', () => {
+    console.log(`Stream server is running on http://${getLocalIp()}:${STREAM_PORT}`);
 });

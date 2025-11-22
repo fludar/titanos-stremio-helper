@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "stremio-addon-sdk": "^1.6.10"
+    "stremio-addon-sdk": "^1.6.10",
+    "webtorrent": "^2.8.4",
+    "webtorrent-hybrid": "^5.0.2"
   }
 }
