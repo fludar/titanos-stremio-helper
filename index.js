@@ -16,7 +16,7 @@ function getLocalIp() {
 }
 
 const addonApp = express();
-const ADDON_PORT = process.env.PORT || 7000;
+const ADDON_PORT = 7000;
 
 addonApp.get('/', (req, res) => {
     res.redirect('/manifest.json');
