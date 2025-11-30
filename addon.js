@@ -4,9 +4,12 @@ import os from 'os';
 
 function getLocalIp() {
     const interfaces = os.networkInterfaces();
+    const skipPatterns = ['tailscale', 'zt', 'tun', 'tap', 'vpn', 'veth', 'docker', 'br-', 'vbox', 'vmware'];
     for (const name of Object.keys(interfaces)) {
+        if (skipPatterns.some(p => name.toLowerCase().includes(p))) continue;
         for (const iface of interfaces[name]) {
             if (iface.family === 'IPv4' && !iface.internal) {
+                if (iface.address.startsWith('100.')) continue;
                 return iface.address;
             }
         }
